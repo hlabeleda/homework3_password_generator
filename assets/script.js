@@ -14,10 +14,10 @@ function writePassword() {
 generateBtn.addEventListener("click", writePassword);
 
 //variables for password list
-var upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
-var numericCase = "0123456789";
-var specialCase = "!@#$%^&*()_-+={[}]|;'<,>.?/";
+var upperCaseLetters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+var lowerCaseLetters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+var numericCase = [0,1,2,3,4,5,6,7,8,9];
+var specialCase = ["!","@","#","$","%","^","&","*","(",")","_","-","+","=","{","[","}","]","|",";","'","<",",",">",".","?","/"];
 
 //assigns a variable to each user input when asked what they want in their password
 var verifyLowerCase;
@@ -29,19 +29,20 @@ var userChoices; //used to concat together user's choices then randomly select f
 function generatePassword() {
   var userConfirm = window.confirm("Would you like to generate a password?");//window.confirm gives ok or cancel, returns a boolean.
 
-  if (!userConfirm) {// if user hits cancel, message below appears.  "if !userChoice" mean if it's not equal as userChoice, then place a message "thank you...", return stops the function.
+  if (!userConfirm) {// if user hits cancel, message below appears.  "if !userChoice" mean if it's not equal as userChoice, then place a message "thank you...", return stops the function. Worked with my TA to adjust this from window.confirm to boolean.
     alert("Thank you for using Password Generator.");
     return;
   
   } 
 
-  var password = ""//var password is where we would assign a random character
+  
   
   if (userConfirm) {
-    var length = window.prompt("Please choose the length of the password.  Must be at least 8 characters but no more than 128 characters.");//made a var named length to the window prompt that user types in, so it assigns the number the user chooses to a variable. then we use that variable to pick the number or random characters
-    // console.log("User chosen number", length)//displays the number that the user picks.
+    var pwLength = window.prompt("Please choose the length of the password.  Must be at least 8 characters but no more than 128 characters.");//made a var named pwLength to the window prompt that user types in, so it assigns the number the user chooses to a variable. then we use that variable to pick the number or random characters
+    // console.log("User chosen number", pwLength)//displays the number that the user picks.
+    // worked with my TA to adjus this from window.confirm to boolean.
 
-    if (length < 8 || length > 128) {//if user picks less than 8 or more than 128, program stops. Forces user to pick between 8 to 128 characters.
+    if (pwLength < 8 || pwLength > 128) {//if user picks less than 8 or more than 128, program stops. Forces user to pick between 8 to 128 characters.
       alert("Please choose again. Must be at least 8 characters but no more than 128 characters.");
       return;
 
@@ -60,92 +61,104 @@ function generatePassword() {
     };
 
     if (verifyLowerCase && verifyUpperCase && verifyNumericCase && verifySpecialCase) {
-      userChoices = (verifyLowerCase += verifyUpperCase += verifyNumericCase += verifySpecialCase); //combines together the users choice if user picked ok on all 4 choices.
+      userChoices = lowerCaseLetters.concat(upperCaseLetters, numericCase, specialCase); //combines together the users choice if user picked ok on all 4 choices.
 
     } //combines together the users choice if user picked ok on 3 choices
       else if (verifyLowerCase && verifyUpperCase && verifyNumericCase) {
-        userChoices = (verifyLowerCase += verifyUpperCase += verifyNumericCase);
+        userChoices = lowerCaseLetters.concat(upperCaseLetters, numericCase);
 
       }
 
       else if (verifyLowerCase && verifyUpperCase && verifySpecialCase) {
-        userChoices = (verifyLowerCase += verifyUpperCase += verifySpecialCase);
+        userChoices = lowerCaseLetters.concat(upperCaseLetters, specialCase);
 
       }
 
       else if (verifyUpperCase && verifyNumericCase && verifySpecialCase) {
-        userChoices = (verifyUpperCase += verifyNumericCase += verifySpecialCase);
+        userChoices = upperCaseLetters.concat(numericCase, specialCase);
 
       }
       
       else if (verifyLowerCase && verifyNumericCase && verifySpecialCase) {
-        userChoices = (verifyLowerCase += verifyNumericCase += verifySpecialCase);
+        userChoices = lowerCaseLetters.concat(numericCase, specialCase);
 
       }
       // combines together users choice if user picked ok on 2 choices
+      //concat works the same as += to combine options
       else if (verifyLowerCase && verifyUpperCase) {
-        userChoices = (verifyLowerCase += verifyUpperCase);
+        userChoices = (lowerCaseLetters += upperCaseLetters);
 
       }
 
       else if (verifyLowerCase && verifyNumericCase) {
-        userChoices = (verifyLowerCase += verifyNumericCase);
+        userChoices = (lowerCaseLetters += numericCase);
 
       }
 
       else if (verifyLowerCase && verifySpecialCase) {
-        userChoices = (verifyLowerCase += verifySpecialCase);
+        userChoices = (lowerCaseLetters += specialCase);
 
       }
       
       else if (verifyUpperCase && verifyNumericCase) {
-        userChoices = (verifyUpperCase += verifyNumericCase);
+        userChoices = (upperCaseLetters += numericCase);
 
       }
 
       else if (verifyUpperCase && verifySpecialCase) {
-        userChoices = (verifyUpperCase += verifySpecialCase);
+        userChoices = (upperCaseLetters += specialCase);
 
       }
 
       else if (verifyNumericCase && verifySpecialCase) {
-        userChoices = (verifyNumericCase += verifySpecialCase);
+        userChoices = (numericCase += specialCase);
 
       }
       //if user picks only one criteria
       else if (verifyLowerCase) {
-        userChoices = (verifyLowerCase);
+        userChoices = (lowerCaseLetters);
 
       }
     
       else if (verifyUpperCase) {
-        userChoices = (verifyUpperCase);
+        userChoices = (upperCaseLetters);
 
       }
 
       else if (verifyNumericCase) {
-        userChoices = (verifyNumericCase);
+        userChoices = (numericCase);
 
       }
 
       else if (verifySpecialCase) {
-        userChoices = (verifySpecialCase);
+        userChoices = (specialCase);
 
       }
 
+      var userPwdGenLength = [];//variable userPwdGenLength is placeholder for user desired password length
 
 
+    for (let i = 0; i < pwLength; i++) { //loops through the length that the user chooses to pick a random character
+      // console.log("generate a random value here");//console just to see if i'm getting results.
 
-    for (let i = 0; i < length; i++) { //loops through the length that the user chooses to pick a random character
-      console.log("generate a random value here");
-      //how to generate random char
-
-      var password = userChoices[Math.floor(Math.random() * userChoices.length)];
-      console.log("password?", password);
-      // password = password + randomChar //
+      //assigns variable name randomChar to the user's choice of character options and loops throught the length of the array
+      var randomChar = userChoices[Math.floor(Math.random() * userChoices.length)];
+      userPwdGenLength.push(randomChar);//result from randomChar variable is then placed in userPwdGenLength. each character placed at the end of the array.
+      // console.log("password?", randomChar);//console just to see if i'm getting results.
+      
     }
   }  
+    //couldn't get the password to generate onto textarea #password.  found this line of code online.  
+     var passResult = userPwdGenLength.join("");// .join makes userPwdGenLength into a string
+     UserInput(passResult);
+     return passResult;
 
+     //also used this line of code but i'm not sure why it's necessary.  I get that we're placing the result from passResult variable, into textarea #password, but I thought since passwordText.value = password, and password variable is generatePassword function, shouldn't the result of generatePassword function get passed onto password variable, then onto passwordText, which is assigned to #password?
+     function UserInput(passResult) {
+      document.querySelector("#password").textContent = passResult;
+
+     }
+     
 
   //function that runs to generate a random number between 8 and 128
   /*function getRandomNumber(min,max) {
@@ -161,6 +174,7 @@ function generatePassword() {
   }
 
   getRandomNumber()*/
+
 
 
 
